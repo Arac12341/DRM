@@ -139,26 +139,31 @@ const Hero3D: React.FC<Hero3DProps> = ({ sectionId = 'hero', pinScreens = 1.25 }
       {/* Film-grain overlay (CSS, cheap, works with or without WebGL). */}
       <div className="grain pointer-events-none absolute inset-0 opacity-60" />
 
-      {/* ---- Wordmark + CTA, stacked at bottom-left ---- */}
-      <div className="pointer-events-none absolute bottom-0 left-0 flex max-w-full flex-col items-start gap-4 px-[4vw] pb-[3vw]">
-        {/* SWAP: point href at your real pre-order / waitlist URL. White pill,
-            pure-black text (same #000 as the stage). Sits directly on top of the
-            wordmark. */}
-        <a
-          href="https://dream266436.substack.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group pointer-events-auto"
+      {/* ---- Wordmark + waitlist form, stacked at bottom-left ---- */}
+      <div className="pointer-events-auto absolute bottom-0 left-0 flex max-w-full flex-col items-start gap-4 px-[4vw] pb-[3vw]">
+        {/* SWAP: point `action` at your Formspree form endpoint. */}
+        <form
+          action="https://formspree.io/f/mrpgezjo"
+          method="POST"
+          className="flex w-full max-w-[460px] flex-wrap gap-2"
         >
-          <span className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-black shadow-[0_0_45px_rgba(255,255,255,0.25)] transition duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_0_70px_rgba(255,255,255,0.45)]">
-            Join the waitlist
-            <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
-              →
-            </span>
-          </span>
-        </a>
+          <input
+            type="email"
+            name="email"
+            placeholder="you@email.com"
+            required
+            className="min-w-[220px] flex-1 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-white placeholder-white/60 outline-none focus:border-white/40"
+          />
+          <button
+            type="submit"
+            className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-black transition duration-300 hover:-translate-y-0.5"
+          >
+            Join
+            <span aria-hidden>→</span>
+          </button>
+        </form>
 
-        {/* SWAP: brand wordmark. reduced clamp so it fits more comfortably. */}
+        {/* SWAP: brand wordmark. */}
         <span className="block select-none font-serif font-extrabold leading-[0.85] tracking-tighter text-white text-[clamp(4rem,14vw,10rem)] [text-shadow:0_2px_40px_rgba(0,0,0,0.55)]">
           DREAM
         </span>
