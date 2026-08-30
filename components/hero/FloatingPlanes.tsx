@@ -31,7 +31,7 @@ import * as THREE from 'three'
 const PLANE_COUNT = 8
 
 // SWAP: brand palette for the placeholder cards.
-const PALETTE = ['#ff5c7c', '#5c9dff', '#ffd15c', '#8b5cf6', '#2dd4bf', '#f97316']
+const PALETTE = ['#ff5c7c', '#5c9dff', '#ffd15c', '#ff3b30', '#2dd4bf', '#f97316']
 
 /** Draw a simple gradient + label into a canvas and wrap it as a texture. */
 function makePlaceholderTexture(index: number, color: string): THREE.CanvasTexture {

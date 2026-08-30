@@ -30,10 +30,10 @@ type Project = {
 }
 
 const PROJECTS: Project[] = [
-  { title: 'Aurora Retail', category: 'Brand + Web', href: '#', gradient: 'linear-gradient(135deg,#ff5c7c,#8b5cf6)' },
+  { title: 'Aurora Retail', category: 'Brand + Web', href: '#', gradient: 'linear-gradient(135deg,#ff5c7c,#ff3b30)' },
   { title: 'Northwind Labs', category: 'Product', href: '#', gradient: 'linear-gradient(135deg,#5c9dff,#2dd4bf)' },
   { title: 'Kestrel Studio', category: 'Identity', href: '#', gradient: 'linear-gradient(135deg,#ffd15c,#f97316)' },
-  { title: 'Meridian Bank', category: 'Design System', href: '#', gradient: 'linear-gradient(135deg,#8b5cf6,#5c9dff)' },
+  { title: 'Meridian Bank', category: 'Design System', href: '#', gradient: 'linear-gradient(135deg,#ff3b30,#5c9dff)' },
   { title: 'Fathom Audio', category: 'Web + Motion', href: '#', gradient: 'linear-gradient(135deg,#2dd4bf,#5c9dff)' },
   { title: 'Cobalt Health', category: 'Product', href: '#', gradient: 'linear-gradient(135deg,#f97316,#ff5c7c)' },
 ]

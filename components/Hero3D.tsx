@@ -153,9 +153,9 @@ const Hero3D: React.FC<Hero3DProps> = ({ sectionId = 'hero', pinScreens = 1.25 }
           </span>
         </a>
 
-        {/* SWAP: brand wordmark. clamp() keeps it huge but never overflowing. */}
-        <span className="block select-none font-serif font-extrabold leading-[0.85] tracking-tighter text-white text-[clamp(4.5rem,20vw,18rem)] [text-shadow:0_2px_40px_rgba(0,0,0,0.55)]">
-          DRM.
+        {/* SWAP: brand wordmark. reduced clamp so it fits more comfortably. */}
+        <span className="block select-none font-serif font-extrabold leading-[0.85] tracking-tighter text-white text-[clamp(4rem,14vw,10rem)] [text-shadow:0_2px_40px_rgba(0,0,0,0.55)]">
+          DREAM
         </span>
       </div>
 

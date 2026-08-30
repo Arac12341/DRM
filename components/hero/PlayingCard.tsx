@@ -71,8 +71,13 @@ function makeFrontTexture(): THREE.CanvasTexture {
   const red = '#c8102e'
 
   // Paper
+  // Fill full canvas background to avoid transparent corner pixels that can
+  // produce visible seams when mapped to a box face.
   ctx.fillStyle = '#fbfaf5'
-  roundRect(ctx, 0, 0, TEX_W, TEX_H, TEX_W * 0.07)
+  ctx.fillRect(0, 0, TEX_W, TEX_H)
+  // Draw the rounded inner card area on top (visual corner radius).
+  ctx.strokeStyle = 'rgba(0,0,0,0.0)'
+  roundRect(ctx, TEX_W * 0.0, TEX_H * 0.0, TEX_W, TEX_H, TEX_W * 0.07)
   ctx.fill()
 
   // Hairline frame
@@ -111,7 +116,11 @@ function makeBackTexture(): THREE.CanvasTexture {
   const ink = '#0b3d91' // deep blue
 
   // Bleed + white margin + inner panel
+  // Fill full canvas background first so corners are opaque instead of
+  // transparent (prevents thin seam lines on the box edges).
   ctx.fillStyle = ink
+  ctx.fillRect(0, 0, TEX_W, TEX_H)
+  // Draw the rounded outer panel on top.
   roundRect(ctx, 0, 0, TEX_W, TEX_H, TEX_W * 0.07)
   ctx.fill()
   ctx.fillStyle = '#fbfaf5'

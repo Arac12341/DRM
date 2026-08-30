@@ -174,13 +174,13 @@ const PackReveal: React.FC<PackRevealProps> = ({ sectionId = 'pack' }) => {
         >
           <div className="mr-10 w-full max-w-lg md:mr-[9vw] flex items-start gap-6">
             {/* vertical accent bar for visual structure (hidden on small screens) */}
-            <div className="hidden md:block w-1.5 rounded-full h-40 bg-gradient-to-b from-[#8b7fd4] to-[#6b56b8]" />
+            <div className="hidden md:block w-1.5 rounded-full h-40 bg-black" />
 
             <div>
               <p className={EYEBROW}>The pack</p>
 
               {/* Gradient serif headline */}
-              <h2 className="mt-6 font-serif font-semibold text-4xl md:text-6xl leading-[1.05] tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#6b56b8] to-[#8b7fd4]">
+              <h2 className="mt-6 font-serif font-semibold text-4xl md:text-6xl leading-[1.05] tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#6b56b8] to-[#8b7fd4']">
                 A nightcap you can carry in your pocket.
               </h2>
 
@@ -204,7 +204,7 @@ const PackReveal: React.FC<PackRevealProps> = ({ sectionId = 'pack' }) => {
               Three ingredients. Nothing to sleep on.
             </h2>
 
-            <div className="mt-12 grid grid-cols-3 divide-x-2 divide-[#8b7fd4]/70">
+            <div className="mt-12 grid grid-cols-3 divide-x-2 divide-black/70">
               {INGREDIENTS.map((ing) => (
                 <div
                   key={ing.name}

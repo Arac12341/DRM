@@ -48,7 +48,8 @@ const HeroScene: React.FC<HeroSceneProps> = ({ progressRef }) => {
   // "DZ." wordmark / CTA stack leaves free. World units at z=0; scaled down on
   // smaller screens where that stack is small and the card is near full-bleed.
   // (Camera still looks at the origin, so this reads as a pure horizontal shift.)
-  const cardOffsetX = size.width >= 1024 ? 1.3 : size.width >= 768 ? 0.7 : 0
+  // Nudge the card a bit further right on larger viewports.
+  const cardOffsetX = size.width >= 1024 ? 2.4 : size.width >= 768 ? 1 : 0
 
   // ---------------------------------------------------------------------------
   // 2. MOUSE PARALLAX (input only — applied in the frame loop below)

@@ -1,12 +1,11 @@
 /** @type {import('next').NextConfig} */
+// Make `basePath` configurable via env so local dev runs at `/` while
+// production builds can target a repo subpath (e.g. `/DRM`).
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || ''
 const nextConfig = {
-  // Export static HTML (no SSR). Required for GitHub Pages static deployment.
   output: 'export',
-  // If you host on GitHub Pages under a subpath, set `basePath` accordingly.
-  // For project pages (https://<user>.github.io/<repo>/) set the repo name here.
-  basePath: '/DRM',
-  // Ensure static assets are requested from the same base path.
-  assetPrefix: '/DRM',
+  // Only set `basePath` when `NEXT_PUBLIC_BASE_PATH` is provided.
+  ...(BASE ? { basePath: BASE } : {}),
 }
 
 module.exports = nextConfig
