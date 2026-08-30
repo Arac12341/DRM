@@ -42,7 +42,7 @@ const MUTED = 'text-neutral-500'
 const EYEBROW = 'font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-400'
 
 // SWAP: the three actives (these are what's on the real box back panel).
-const iconClass = 'h-14 w-14 md:h-16 md:w-16 text-[#8b7fd4]'
+const iconClass = 'h-20 w-20 md:h-28 md:w-28 text-[#8b7fd4]'
 const INGREDIENTS: { name: string; dose: string; icon: React.ReactNode }[] = [
   {
     name: 'Melatonin',
@@ -211,8 +211,8 @@ const PackReveal: React.FC<PackRevealProps> = ({ sectionId = 'pack' }) => {
                   className="flex flex-col items-center px-3 text-center first:pl-0 last:pr-0"
                 >
                   {ing.icon}
-                  <h3 className={`mt-4 text-xl md:text-2xl font-serif font-semibold leading-tight text-[#8b7fd4]`}>{ing.name}</h3>
-                  <p className="mt-1 text-sm font-sans text-neutral-500 md:text-base">{ing.dose}</p>
+                  <h3 className={`mt-5 text-2xl md:text-3xl font-serif font-semibold leading-tight text-[#8b7fd4]`}>{ing.name}</h3>
+                  <p className="mt-1.5 text-base font-sans text-neutral-500 md:text-lg">{ing.dose}</p>
                 </div>
               ))}
             </div>

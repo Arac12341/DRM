@@ -144,9 +144,14 @@ const Hero3D: React.FC<Hero3DProps> = ({ sectionId = 'hero', pinScreens = 1.25 }
         {/* SWAP: point href at your real pre-order / waitlist URL. White pill,
             pure-black text (same #000 as the stage). Sits directly on top of the
             wordmark. */}
-        <a href="#pack" className="group pointer-events-auto">
+        <a
+          href="https://dream266436.substack.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group pointer-events-auto"
+        >
           <span className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-black shadow-[0_0_45px_rgba(255,255,255,0.25)] transition duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_0_70px_rgba(255,255,255,0.45)]">
-            Pre-order
+            Join the waitlist
             <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
               →
             </span>
