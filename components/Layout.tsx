@@ -10,13 +10,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="min-h-screen">
       <header className="fixed top-0 left-0 right-0 z-50 bg-transparent">
-        <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center">
           <div className="text-lg font-serif font-semibold">DREAM</div>
-          <ul className="hidden md:flex gap-6 text-sm">
-            <li>Work</li>
-            <li>About</li>
-            <li>Contact</li>
-          </ul>
         </nav>
       </header>
       <main>{children}</main>
