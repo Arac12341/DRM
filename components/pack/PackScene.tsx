@@ -88,9 +88,12 @@ const PackScene: React.FC<PackSceneProps> = ({ progressRef }) => {
   }, [])
 
   // Real front / back artwork (cropped from the supplied dieline).
+  // Prefix with `NEXT_PUBLIC_BASE_PATH` so assets resolve correctly when
+  // the site is hosted at a subpath (GitHub Pages project pages).
+  const BASE = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(/\/$/, '')
   const [frontTex, backTex] = useLoader(THREE.TextureLoader, [
-    '/dream-box-front.jpg',
-    '/dream-box-back.jpg',
+    `${BASE}/dream-box-front.jpg`,
+    `${BASE}/dream-box-back.jpg`,
   ])
   useEffect(() => {
     for (const t of [frontTex, backTex]) {

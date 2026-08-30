@@ -30,7 +30,10 @@ if (typeof window !== 'undefined') {
  * Import with `next/dynamic({ ssr: false })`.
  */
 
-const BOX_FRONT = '/dream-box-front.jpg' // SWAP: real front-panel art
+// Use runtime build-time base path so the background image resolves under
+// project pages (e.g. /DRM/dream-box-front.jpg).
+const BASE = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(/\/$/, '')
+const BOX_FRONT = `${BASE}/dream-box-front.jpg` // SWAP: real front-panel art
 const RUNWAY_VH = 460 // scroll distance for the whole sequence (+ 100vh sticky view)
 
 // Softer than pure black — easier to read on the white stage.

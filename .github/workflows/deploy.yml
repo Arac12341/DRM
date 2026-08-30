@@ -25,6 +25,8 @@ jobs:
 
       - name: Build and export
         run: npm run export
+        env:
+          NEXT_PUBLIC_BASE_PATH: '/DRM'
 
       - name: Show `out/` contents (debug)
         run: |
