@@ -40,7 +40,7 @@ const Home: React.FC = () => {
 
       <footer className="border-t border-neutral-200 py-8">
         <div className="mx-auto max-w-6xl px-6 text-xs text-neutral-400">
-          © {new Date().getFullYear()} DREAM. Placeholder footer.
+          Rest Easy, Dream Deep © 2026
         </div>
       </footer>
     </>
