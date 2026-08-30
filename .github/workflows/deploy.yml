@@ -23,31 +23,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Served from the custom domain root (dreamsg.org) -> NO basePath, and
+      # NO asset-path rewriting. public/CNAME is copied into out/ automatically.
       - name: Build and export
         run: npm run export
-        env:
-          NEXT_PUBLIC_BASE_PATH: '/DRM'
 
-      - name: Fix exported asset paths
-        run: |
-          echo "Rewriting absolute-root asset paths to /DRM in out/"
-          # Find files that reference absolute paths and rewrite them to the repo subpath.
-          set -e
-          files=$(grep -rl --exclude-dir=.git '/_next\|/dream-box-front.jpg\|/dream-box-back.jpg' out || true)
-          if [ -n "$files" ]; then
-            printf '%s\n' $files | xargs -r sed -i "s|href=\"/_next|href=\"/DRM/_next|g"
-            printf '%s\n' $files | xargs -r sed -i "s|src=\"/_next|src=\"/DRM/_next|g"
-            printf '%s\n' $files | xargs -r sed -i "s|/dream-box-front.jpg|/DRM/dream-box-front.jpg|g"
-            printf '%s\n' $files | xargs -r sed -i "s|/dream-box-back.jpg|/DRM/dream-box-back.jpg|g"
-            printf '%s\n' $files | xargs -r sed -i "s|\"/_next|\"/DRM/_next|g"
-          fi
-
-      - name: Show `out/` contents (debug)
-        run: |
-          echo "=== cwd: $(pwd) ==="
-          ls -la
-          echo "=== out/ ==="
-          ls -la out || true
+      - name: Show out/ contents (debug)
+        run: ls -la out || true
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
@@ -55,3 +37,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
           publish_branch: gh-pages
+          # Rewrites the CNAME on every deploy so the custom domain never drops.
+          cname: dreamsg.org
