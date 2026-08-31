@@ -34,7 +34,8 @@ if (typeof window !== 'undefined') {
 // project pages (e.g. /DRM/dream-box-front.jpg).
 const BASE = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(/\/$/, '')
 const BOX_FRONT = `${BASE}/dream-box-front.jpg` // SWAP: real front-panel art
-const RUNWAY_VH = 460 // scroll distance for the whole sequence (+ 100vh sticky view)
+// Section height (Tailwind classes on the <section>): desktop 560vh, mobile
+// 360vh. 100vh of that is the sticky view; the rest is the scroll runway.
 
 // Softer than pure black — easier to read on the white stage.
 const INK = 'text-[#1c2340]'
@@ -42,7 +43,7 @@ const MUTED = 'text-neutral-500'
 const EYEBROW = 'font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-400'
 
 // SWAP: the three actives (these are what's on the real box back panel).
-const iconClass = 'h-20 w-20 md:h-28 md:w-28 text-[#8b7fd4]'
+const iconClass = 'h-14 w-14 shrink-0 md:h-28 md:w-28 text-[#8b7fd4]'
 const INGREDIENTS: { name: string; dose: string; icon: React.ReactNode }[] = [
   {
     name: 'Melatonin',
@@ -139,8 +140,7 @@ const PackReveal: React.FC<PackRevealProps> = ({ sectionId = 'pack' }) => {
     <section
       id={sectionId}
       ref={sectionRef}
-      className="relative w-full bg-white"
-      style={{ height: `${100 + RUNWAY_VH}vh` }}
+      className="relative h-[560vh] w-full bg-white max-md:h-[360vh]"
     >
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/* --- 3D deck --- */}
@@ -167,57 +167,63 @@ const PackReveal: React.FC<PackRevealProps> = ({ sectionId = 'pack' }) => {
           />
         )}
 
-        {/* --- Page 2 copy: right side (deck is resting left) --- */}
+        {/* --- Page 2 copy: right side (deck left) on desktop; a full-width
+            block anchored to the TOP on phones (deck sits low there). --- */}
         <div
           ref={p2Ref}
-          className="absolute inset-y-0 right-0 flex items-center will-change-transform"
+          className="absolute inset-y-0 right-0 flex items-center will-change-transform max-md:inset-y-auto max-md:inset-x-0 max-md:top-0 max-md:items-start max-md:justify-center max-md:px-6 max-md:pt-16"
         >
-          <div className="mr-10 w-full max-w-lg md:mr-[9vw] flex items-start gap-6">
+          <div className="mr-10 flex w-full max-w-lg items-start gap-6 md:mr-[9vw] max-md:mr-0 max-md:max-w-sm">
             {/* vertical accent bar for visual structure (hidden on small screens) */}
-            <div className="hidden md:block w-1.5 rounded-full h-40 bg-black" />
+            <div className="hidden h-40 w-1.5 rounded-full bg-black md:block" />
 
             <div>
               <p className={EYEBROW}>The pack</p>
 
               {/* Gradient serif headline */}
-              <h2 className="mt-6 font-serif font-semibold text-4xl md:text-6xl leading-[1.05] tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#6b56b8] to-[#8b7fd4']">
+              <h2 className="mt-6 font-serif text-4xl font-semibold leading-[1.05] tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#6b56b8] to-[#8b7fd4] md:text-6xl max-md:mt-4 max-md:text-[1.7rem] max-md:leading-[1.12]">
                 A nightcap you can carry in your pocket.
               </h2>
 
               {/* Translucent backdrop retained; paragraph removed per request */}
-              <div className="mt-6 bg-white/6 backdrop-blur-sm rounded-lg p-6 max-w-md" />
+              <div className="mt-6 max-w-md rounded-lg bg-white/6 p-6 backdrop-blur-sm max-md:hidden" />
             </div>
           </div>
         </div>
 
-        {/* --- Page 3 copy: left side (deck has turned to its back on the right) --- */}
+        {/* --- Page 3 copy: left side (deck right) on desktop; a full-width
+            block anchored to the BOTTOM on phones (deck sits high there). --- */}
         <div
           ref={p3Ref}
-          className="absolute inset-y-0 left-0 flex items-center will-change-transform"
+          className="absolute inset-y-0 left-0 flex items-center will-change-transform max-md:inset-y-auto max-md:inset-x-0 max-md:bottom-0 max-md:items-end max-md:justify-center max-md:px-6 max-md:pb-12"
         >
-          <div className="ml-6 w-full max-w-lg md:ml-[9vw]">
+          <div className="ml-6 w-full max-w-lg md:ml-[9vw] max-md:ml-0 max-md:max-w-sm">
             {/* SWAP: page-3 copy — the ingredients story. */}
             <p className={EYEBROW}>Inside every strip</p>
             <h2
-              className={`mt-6 text-[1.9rem] font-serif font-semibold leading-[1.15] tracking-tight md:text-[2.6rem] text-[#6b56b8]`}
+              className={`mt-6 text-[1.9rem] font-serif font-semibold leading-[1.15] tracking-tight md:text-[2.6rem] text-[#6b56b8] max-md:mt-4 max-md:text-[1.7rem]`}
             >
               Three ingredients. Nothing to sleep on.
             </h2>
 
-            <div className="mt-12 grid grid-cols-3 divide-x-2 divide-black/70">
+            <div className="mt-12 grid grid-cols-3 divide-x-2 divide-black/70 max-md:mt-6 max-md:grid-cols-1 max-md:divide-x-0 max-md:divide-y max-md:divide-black/15">
               {INGREDIENTS.map((ing) => (
                 <div
                   key={ing.name}
-                  className="flex flex-col items-center px-3 text-center first:pl-0 last:pr-0"
+                  className="flex flex-col items-center px-3 text-center first:pl-0 last:pr-0 max-md:flex-row max-md:items-center max-md:gap-4 max-md:px-0 max-md:py-4 max-md:text-left"
                 >
                   {ing.icon}
-                  <h3 className={`mt-5 text-2xl md:text-3xl font-serif font-semibold leading-tight text-[#8b7fd4]`}>{ing.name}</h3>
-                  <p className="mt-1.5 text-base font-sans text-neutral-500 md:text-lg">{ing.dose}</p>
+                  <div>
+                    <h3 className="mt-5 font-serif text-2xl font-semibold leading-tight text-[#8b7fd4] md:text-3xl max-md:mt-0 max-md:text-xl">
+                      {ing.name}
+                    </h3>
+                    <p className="mt-1.5 text-base font-sans text-neutral-500 md:text-lg max-md:mt-0.5 max-md:text-sm">
+                      {ing.dose}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
-
-            
           </div>
         </div>
       </div>

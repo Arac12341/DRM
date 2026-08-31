@@ -76,7 +76,17 @@ type PackSceneProps = {
 }
 
 const PackScene: React.FC<PackSceneProps> = ({ progressRef }) => {
-  const { viewport } = useThree()
+  const { viewport, size } = useThree()
+
+  // On phones the deck can't slide left/right (no room beside it), so it stays
+  // centred and instead shifts DOWN for page 2 / UP for page 3 to leave space
+  // for the stacked copy. It's also scaled down and the backdrop card is hidden.
+  const isMobile = size.width < 768
+  const restX = isMobile ? 0 : REST_X
+  const endX = isMobile ? 0 : END_X
+  const restY = isMobile ? -0.95 : REST_Y
+  const endY = isMobile ? 1.05 : REST_Y
+  const deckScale = isMobile ? 0.56 : 1
 
   const moveRef = useRef<THREE.Group>(null) // translate-in
   const spinRef = useRef<THREE.Group>(null) // the 360° Y flip
@@ -172,14 +182,21 @@ const PackScene: React.FC<PackSceneProps> = ({ progressRef }) => {
 
     const lerp = THREE.MathUtils.lerp
 
-    // ---- X position ----------------------------------------------------
+    // ---- X / Y position ----------------------------------------------
+    // Desktop: slides left → right. Mobile: stays centred (restX==endX==0) and
+    // slides down → up instead so stacked copy has room.
     let targetX: number
+    let targetY: number
     if (p < P_ENTER) {
-      targetX = lerp(startX, REST_X, easeOut(seg(p, 0, P_ENTER)))
+      targetX = lerp(startX, restX, easeOut(seg(p, 0, P_ENTER)))
+      targetY = restY
     } else if (p < P_HOLD) {
-      targetX = REST_X
+      targetX = restX
+      targetY = restY
     } else {
-      targetX = lerp(REST_X, END_X, easeInOut(seg(p, P_HOLD, P_MOVE)))
+      const t = easeInOut(seg(p, P_HOLD, P_MOVE))
+      targetX = lerp(restX, endX, t)
+      targetY = lerp(restY, endY, t)
     }
 
     // ---- Y rotation --------------------------------------------------
@@ -195,6 +212,7 @@ const PackScene: React.FC<PackSceneProps> = ({ progressRef }) => {
 
     if (moveRef.current) {
       moveRef.current.position.x = damp(moveRef.current.position.x, targetX, L, delta)
+      moveRef.current.position.y = damp(moveRef.current.position.y, targetY, L, delta)
     }
     if (spinRef.current) {
       spinRef.current.rotation.y = damp(spinRef.current.rotation.y, targetRotY, L, delta)
@@ -209,14 +227,20 @@ const PackScene: React.FC<PackSceneProps> = ({ progressRef }) => {
   return (
     <>
       {/* Faint slanted playing card behind everything — starts on its back,
-          turns to its front during the transition. Watermark-quiet. */}
-      <group position={BD_POS} rotation={BD_SLANT}>
+          turns to its front during the transition. Watermark-quiet.
+          Hidden on phones where it just crowds the frame. */}
+      <group position={BD_POS} rotation={BD_SLANT} visible={!isMobile}>
         <mesh ref={backdropRef} material={backdropMats} rotation={[0, Math.PI, 0]}>
           <boxGeometry args={[BD_W, BD_H, 0.02]} />
         </mesh>
       </group>
 
-      <group ref={moveRef} position={[startX, REST_Y, 0]} rotation={[VIEW_TILT_X, 0, 0]}>
+      <group
+        ref={moveRef}
+        position={[startX, restY, 0]}
+        rotation={[VIEW_TILT_X, 0, 0]}
+        scale={deckScale}
+      >
       {/* Ground shadow — moves with the box, doesn't spin. */}
       <mesh
         material={shadowMat}
