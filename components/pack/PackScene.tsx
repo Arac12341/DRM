@@ -84,9 +84,9 @@ const PackScene: React.FC<PackSceneProps> = ({ progressRef }) => {
   const isMobile = size.width < 768
   const restX = isMobile ? 0 : REST_X
   const endX = isMobile ? 0 : END_X
-  const restY = isMobile ? -0.95 : REST_Y
-  const endY = isMobile ? 1.05 : REST_Y
-  const deckScale = isMobile ? 0.56 : 1
+  const restY = isMobile ? -0.55 : REST_Y
+  const endY = isMobile ? 1.2 : REST_Y
+  const deckScale = isMobile ? 0.7 : 1
 
   const moveRef = useRef<THREE.Group>(null) // translate-in
   const spinRef = useRef<THREE.Group>(null) // the 360° Y flip

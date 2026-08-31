@@ -185,6 +185,24 @@ const PackReveal: React.FC<PackRevealProps> = ({ sectionId = 'pack' }) => {
                 A nightcap you can carry in your pocket.
               </h2>
 
+              {/* Phone-only: a supporting line + quick-fact chips fill the space
+                  between the top-anchored copy and the low-sitting deck. */}
+              <div className="hidden max-md:block">
+                <p className="mt-4 text-sm leading-relaxed text-neutral-500">
+                  Dissolvable melatonin strips — no water, no pill, no morning fog.
+                </p>
+                <ul className="mt-5 flex flex-wrap gap-2">
+                  {['Sugar-free', 'Vegan', 'Discreet'].map((tag) => (
+                    <li
+                      key={tag}
+                      className="rounded-full border border-neutral-300 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500"
+                    >
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
               {/* Translucent backdrop retained; paragraph removed per request */}
               <div className="mt-6 max-w-md rounded-lg bg-white/6 p-6 backdrop-blur-sm max-md:hidden" />
             </div>
