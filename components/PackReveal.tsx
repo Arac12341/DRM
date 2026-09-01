@@ -43,7 +43,7 @@ const MUTED = 'text-neutral-500'
 const EYEBROW = 'font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-400'
 
 // SWAP: the three actives (these are what's on the real box back panel).
-const iconClass = 'h-14 w-14 shrink-0 md:h-28 md:w-28 text-[#8b7fd4]'
+const iconClass = 'h-10 w-10 shrink-0 md:h-28 md:w-28 text-[#8b7fd4]'
 const INGREDIENTS: { name: string; dose: string; icon: React.ReactNode }[] = [
   {
     name: 'Melatonin',
@@ -209,30 +209,31 @@ const PackReveal: React.FC<PackRevealProps> = ({ sectionId = 'pack' }) => {
           </div>
         </div>
 
-        {/* --- Page 3 copy: left side (deck right) on desktop; a full-width
-            block anchored to the BOTTOM on phones (deck sits high there). --- */}
+        {/* --- Page 3 copy: left side (deck right) on desktop; on phones a
+            full-width block anchored just under the deck (which parks near the
+            top), so it doesn't pool at the bottom of tall screens. --- */}
         <div
           ref={p3Ref}
-          className="absolute inset-y-0 left-0 flex items-center will-change-transform max-md:inset-y-auto max-md:inset-x-0 max-md:bottom-0 max-md:items-end max-md:justify-center max-md:px-6 max-md:pb-12"
+          className="absolute inset-y-0 left-0 flex items-center will-change-transform max-md:inset-y-auto max-md:inset-x-0 max-md:top-[43%] max-md:bottom-0 max-md:items-center max-md:justify-center max-md:px-6 max-md:pb-6"
         >
           <div className="ml-6 w-full max-w-lg md:ml-[9vw] max-md:ml-0 max-md:max-w-sm">
             {/* SWAP: page-3 copy — the ingredients story. */}
             <p className={EYEBROW}>Inside every strip</p>
             <h2
-              className={`mt-6 text-[1.9rem] font-serif font-semibold leading-[1.15] tracking-tight md:text-[2.6rem] text-[#6b56b8] max-md:mt-4 max-md:text-[1.7rem]`}
+              className={`mt-6 text-[1.9rem] font-serif font-semibold leading-[1.15] tracking-tight md:text-[2.6rem] text-[#6b56b8] max-md:mt-2 max-md:text-[1.35rem] max-md:leading-[1.2]`}
             >
               Three ingredients. Nothing to sleep on.
             </h2>
 
-            <div className="mt-12 grid grid-cols-3 divide-x-2 divide-black/70 max-md:mt-6 max-md:grid-cols-1 max-md:divide-x-0 max-md:divide-y max-md:divide-black/15">
+            <div className="mt-12 grid grid-cols-3 divide-x-2 divide-black/70 max-md:mt-3 max-md:grid-cols-1 max-md:divide-x-0 max-md:divide-y max-md:divide-black/15">
               {INGREDIENTS.map((ing) => (
                 <div
                   key={ing.name}
-                  className="flex flex-col items-center px-3 text-center first:pl-0 last:pr-0 max-md:flex-row max-md:items-center max-md:gap-4 max-md:px-0 max-md:py-4 max-md:text-left"
+                  className="flex flex-col items-center px-3 text-center first:pl-0 last:pr-0 max-md:flex-row max-md:items-center max-md:gap-3 max-md:px-0 max-md:py-2.5 max-md:text-left"
                 >
                   {ing.icon}
                   <div>
-                    <h3 className="mt-5 font-serif text-2xl font-semibold leading-tight text-[#8b7fd4] md:text-3xl max-md:mt-0 max-md:text-xl">
+                    <h3 className="mt-5 font-serif text-2xl font-semibold leading-tight text-[#8b7fd4] md:text-3xl max-md:mt-0 max-md:text-lg">
                       {ing.name}
                     </h3>
                     <p className="mt-1.5 text-base font-sans text-neutral-500 md:text-lg max-md:mt-0.5 max-md:text-sm">

@@ -82,11 +82,17 @@ const PackScene: React.FC<PackSceneProps> = ({ progressRef }) => {
   // centred and instead shifts DOWN for page 2 / UP for page 3 to leave space
   // for the stacked copy. It's also scaled down and the backdrop card is hidden.
   const isMobile = size.width < 768
+  // Short phones (~iPhone SE, small Androids) have no vertical budget for a big
+  // deck + stacked copy, so the deck sits lower and smaller there.
+  const shortPhone = isMobile && size.height < 720
   const restX = isMobile ? 0 : REST_X
   const endX = isMobile ? 0 : END_X
-  const restY = isMobile ? -0.55 : REST_Y
-  const endY = isMobile ? 1.2 : REST_Y
-  const deckScale = isMobile ? 0.7 : 1
+  const restY = isMobile ? (shortPhone ? -0.85 : -0.55) : REST_Y
+  const endY = isMobile ? (shortPhone ? 1.5 : 1.3) : REST_Y
+  // On phones the deck also shrinks as it moves to page 3, so the stacked
+  // ingredient copy below it always has room even on short viewports.
+  const restScale = isMobile ? (shortPhone ? 0.6 : 0.7) : 1
+  const endScale = isMobile ? (shortPhone ? 0.46 : 0.52) : 1
 
   const moveRef = useRef<THREE.Group>(null) // translate-in
   const spinRef = useRef<THREE.Group>(null) // the 360° Y flip
@@ -210,9 +216,17 @@ const PackScene: React.FC<PackSceneProps> = ({ progressRef }) => {
       targetRotY = Math.PI * 2 + easeInOut(seg(p, P_HOLD, P_MOVE)) * Math.PI
     }
 
+    // ---- Scale (mobile shrinks toward page 3; no-op on desktop) ------
+    const targetScale =
+      p < P_HOLD
+        ? restScale
+        : lerp(restScale, endScale, easeInOut(seg(p, P_HOLD, P_MOVE)))
+
     if (moveRef.current) {
       moveRef.current.position.x = damp(moveRef.current.position.x, targetX, L, delta)
       moveRef.current.position.y = damp(moveRef.current.position.y, targetY, L, delta)
+      const s = damp(moveRef.current.scale.x, targetScale, L, delta)
+      moveRef.current.scale.setScalar(s)
     }
     if (spinRef.current) {
       spinRef.current.rotation.y = damp(spinRef.current.rotation.y, targetRotY, L, delta)
@@ -239,7 +253,7 @@ const PackScene: React.FC<PackSceneProps> = ({ progressRef }) => {
         ref={moveRef}
         position={[startX, restY, 0]}
         rotation={[VIEW_TILT_X, 0, 0]}
-        scale={deckScale}
+        scale={restScale}
       >
       {/* Ground shadow — moves with the box, doesn't spin. */}
       <mesh
