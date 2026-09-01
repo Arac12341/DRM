@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useRef, type MutableRefObject } from 'react'
+import React, { useEffect, useRef, type MutableRefObject } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import PlayingCard from './PlayingCard'
@@ -105,11 +105,8 @@ const HeroScene: React.FC<HeroSceneProps> = ({ progressRef }) => {
     // position-x offsets the whole (spinning) group, so the card still flips in
     // place — it's just parked to the right.
     <group ref={groupRef} position-x={cardOffsetX}>
-      {/* The card flips with the group: front at scroll 0, back at 0.5, front at 1.
-          Wrapped in Suspense — PlayingCard loads its art with useLoader. */}
-      <Suspense fallback={null}>
-        <PlayingCard />
-      </Suspense>
+      {/* The card flips with the group: front at scroll 0, back at 0.5, front at 1. */}
+      <PlayingCard />
       {/* <ParticleSphere /> — parked (possible backdrop). */}
       {/* <FloatingPlanes /> — parked until the cutout images exist. */}
     </group>
