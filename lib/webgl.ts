@@ -26,10 +26,14 @@ export function isWebGLAvailable(): boolean {
 }
 
 /**
- * True when the user has asked the OS to minimise non-essential motion.
- * We respect this by disabling parallax + scroll-scrubbed camera travel.
+ * Whether to run the reduced-motion code paths (static poses, no pin, no
+ * parallax).
+ *
+ * DISABLED: always returns false so every visitor gets the full scroll
+ * animation regardless of their OS "reduce motion" setting. The scroll-driven
+ * flips only move on user scroll (no autoplay), so this is a deliberate call.
+ * Flip the body back to the `matchMedia` check to honour the OS setting again.
  */
 export function prefersReducedMotion(): boolean {
-  if (typeof window === 'undefined') return false
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  return false
 }
