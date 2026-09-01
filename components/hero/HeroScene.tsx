@@ -36,9 +36,11 @@ const FLIP_TURNS = 1
 type HeroSceneProps = {
   /** Live 0..1 scroll progress through the pinned hero, written by Hero3D. */
   progressRef: MutableRefObject<number>
+  /** Extra whole turns added on top of the scroll flip (email-submit flourish). */
+  boostRef?: MutableRefObject<number>
 }
 
-const HeroScene: React.FC<HeroSceneProps> = ({ progressRef }) => {
+const HeroScene: React.FC<HeroSceneProps> = ({ progressRef, boostRef }) => {
   const groupRef = useRef<THREE.Group>(null)
   const { camera, size } = useThree()
 
@@ -87,7 +89,7 @@ const HeroScene: React.FC<HeroSceneProps> = ({ progressRef }) => {
     // 1. Scroll flip: progress (0..1) -> Y rotation (0..2π·FLIP_TURNS).
     //    We damp toward it rather than assigning directly so fast scroll
     //    flicks read as smooth motion instead of jumps.
-    const flipY = progressRef.current * Math.PI * 2 * FLIP_TURNS
+    const flipY = (progressRef.current + (boostRef?.current ?? 0)) * Math.PI * 2 * FLIP_TURNS
 
     // 2. Parallax: a small nudge layered onto the flip target + a group tilt.
     const parallaxY = pointerTarget.current.x * 0.12

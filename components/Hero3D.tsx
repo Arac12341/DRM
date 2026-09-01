@@ -45,6 +45,87 @@ const Hero3D: React.FC<Hero3DProps> = ({ sectionId = 'hero', pinScreens = 1.25 }
   // re-renders React.
   const progressRef = useRef(0)
 
+  // Extra whole turn the hero card does the moment the email form is submitted.
+  // Tweened 0 -> +1 by the submit handler; HeroScene adds it to the flip target.
+  const boostRef = useRef(0)
+
+  // ---- Inline waitlist submit (no page nav) --------------------------------
+  const FORM_ENDPOINT = 'https://formspree.io/f/mrpgezjo'
+  const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
+  const [formError, setFormError] = useState('')
+  const successRef = useRef<HTMLDivElement>(null)
+  const confettiRef = useRef<HTMLDivElement>(null)
+
+  // A quick celebratory burst from the form's position.
+  const fireConfetti = (cx: number, cy: number) => {
+    const layer = confettiRef.current
+    if (!layer) return
+    const colors = ['#ff3b30', '#ffffff', '#ff6b61', '#c9201a']
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div')
+      const w = 6 + Math.random() * 7
+      p.style.cssText =
+        `position:absolute;left:${cx}px;top:${cy}px;width:${w}px;height:${w * 0.55 + 2}px;` +
+        `border-radius:2px;background:${colors[i % colors.length]};will-change:transform,opacity`
+      layer.appendChild(p)
+      const ang = -Math.PI / 2 + (Math.random() - 0.5) * Math.PI * 0.95
+      const dist = 110 + Math.random() * 240
+      gsap.to(p, {
+        x: Math.cos(ang) * dist,
+        y: Math.sin(ang) * dist + 160,
+        rotation: (Math.random() - 0.5) * 720,
+        duration: 1.1 + Math.random() * 0.7,
+        ease: 'power3.out',
+      })
+      gsap.to(p, {
+        opacity: 0,
+        duration: 0.5,
+        delay: 0.7 + Math.random() * 0.5,
+        onComplete: () => p.remove(),
+      })
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const form = e.currentTarget
+    const rect = form.getBoundingClientRect()
+    setFormStatus('submitting')
+    setFormError('')
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form),
+      })
+      if (res.ok) {
+        setFormStatus('success')
+        fireConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2)
+        gsap.to(boostRef, { current: boostRef.current + 1, duration: 1.15, ease: 'power2.inOut' })
+        return
+      }
+      const data = (await res.json().catch(() => null)) as
+        | { errors?: { message: string }[] }
+        | null
+      setFormStatus('error')
+      setFormError(
+        data?.errors?.length
+          ? data.errors.map((x) => x.message).join(', ')
+          : 'Something went wrong. Please try again.'
+      )
+    } catch {
+      setFormStatus('error')
+      setFormError('Network error — check your connection and try again.')
+    }
+  }
+
+  // Ease the success card in when it appears.
+  useEffect(() => {
+    if (formStatus === 'success' && successRef.current) {
+      gsap.from(successRef.current, { autoAlpha: 0, y: 12, duration: 0.5, ease: 'power2.out' })
+    }
+  }, [formStatus])
+
   // WebGL support — decided after mount (needs `window`).
   const [webglReady, setWebglReady] = useState<boolean | null>(null)
   useEffect(() => {
@@ -129,7 +210,7 @@ const Hero3D: React.FC<Hero3DProps> = ({ sectionId = 'hero', pinScreens = 1.25 }
         >
           <color attach="background" args={['#000000']} />
           <ambientLight intensity={0.6} />
-          <HeroScene progressRef={progressRef} />
+          <HeroScene progressRef={progressRef} boostRef={boostRef} />
         </Canvas>
       )}
 
@@ -141,33 +222,59 @@ const Hero3D: React.FC<Hero3DProps> = ({ sectionId = 'hero', pinScreens = 1.25 }
 
       {/* ---- Wordmark + waitlist form, stacked at bottom-left ---- */}
       <div className="pointer-events-auto absolute bottom-0 left-0 flex max-w-full flex-col items-start gap-4 px-[4vw] pb-[3vw]">
-        {/* SWAP: point `action` at your Formspree form endpoint. */}
-        <form
-          action="https://formspree.io/f/mrpgezjo"
-          method="POST"
-          className="flex w-full max-w-[460px] flex-wrap gap-2"
-        >
-          <input
-            type="email"
-            name="email"
-            placeholder="you@email.com"
-            required
-            className="min-w-[220px] flex-1 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-white placeholder-white/60 outline-none focus:border-white/40"
-          />
-          <button
-            type="submit"
-            className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-black transition duration-300 hover:-translate-y-0.5"
+        {formStatus === 'success' ? (
+          <div
+            ref={successRef}
+            className="flex w-full max-w-[460px] flex-col gap-1.5 rounded-2xl border border-white/15 bg-white/[0.06] px-6 py-5 backdrop-blur-sm"
           >
-            Join
-            <span aria-hidden>→</span>
-          </button>
-        </form>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-white">
+              You&rsquo;re on the list
+            </p>
+            <p className="text-sm text-white/70">
+              Check your inbox and confirm your email to lock in your spot.
+            </p>
+          </div>
+        ) : (
+          <form
+            onSubmit={handleSubmit}
+            action={FORM_ENDPOINT}
+            method="POST"
+            className="flex w-full max-w-[460px] flex-wrap gap-2"
+          >
+            <input
+              type="email"
+              name="email"
+              placeholder="you@email.com"
+              required
+              disabled={formStatus === 'submitting'}
+              className="min-w-[220px] flex-1 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-white placeholder-white/60 outline-none focus:border-white/40 disabled:opacity-60"
+            />
+            <button
+              type="submit"
+              disabled={formStatus === 'submitting'}
+              className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-black transition duration-300 hover:-translate-y-0.5 disabled:opacity-60 disabled:hover:translate-y-0"
+            >
+              {formStatus === 'submitting' ? 'Joining…' : 'Join'}
+              <span aria-hidden>→</span>
+            </button>
+            {formStatus === 'error' && (
+              <p className="w-full text-xs text-white/80">{formError}</p>
+            )}
+          </form>
+        )}
 
         {/* SWAP: brand wordmark. */}
         <span className="block select-none font-serif font-extrabold leading-[0.85] tracking-tighter text-white text-[clamp(4rem,14vw,10rem)] [text-shadow:0_2px_40px_rgba(0,0,0,0.55)]">
           DREAM
         </span>
       </div>
+
+      {/* Confetti burst layer — populated by fireConfetti() on submit. */}
+      <div
+        ref={confettiRef}
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-[60] overflow-hidden"
+      />
 
       {/* Scroll hint, bottom-right */}
       <div className="pointer-events-none absolute bottom-8 right-6 text-xs uppercase tracking-widest text-white/50">
