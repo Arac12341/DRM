@@ -1,0 +1,132 @@
+/* DREAM — Sleep Notes blog. Standalone stylesheet (the blog is plain HTML in
+   /public/blog and does NOT go through the Next build or globals.css).
+   Palette + fonts mirror the main site: black ground, #ff3b30 red accent,
+   Playfair Display headings, Inter body. Body copy is off-white rather than
+   red so long posts stay readable. */
+
+:root {
+  --bg: #000000;
+  --ink: #ededeb;
+  --red: #ff3b30;
+  --muted: #8f8f8f;
+  --rule: #262626;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.75;
+}
+
+a { color: var(--red); text-decoration: underline; text-underline-offset: 2px; }
+a:hover { opacity: 0.75; }
+
+/* --- Header / footer chrome --- */
+.site-head { border-bottom: 1px solid var(--rule); }
+.site-head .bar,
+.site-foot .bar {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 22px;
+}
+.brand {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--red);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+.site-head nav { margin-left: auto; }
+.site-head nav a {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+}
+
+.site-foot { border-top: 1px solid var(--rule); margin-top: 64px; }
+.site-foot .bar { color: var(--muted); font-size: 13px; display: block; }
+
+/* --- Layout --- */
+.wrap { max-width: 700px; margin: 0 auto; padding: 56px 24px 24px; }
+
+h1 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 800;
+  font-size: 2.1rem;
+  line-height: 1.2;
+  color: var(--red);
+  margin: 0 0 0.6rem;
+}
+h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--red);
+  margin: 2.4rem 0 0.6rem;
+}
+p { margin: 0 0 1.2rem; }
+ul { margin: 0 0 1.2rem; padding-left: 1.2rem; }
+li { margin: 0 0 0.5rem; }
+
+.lede { color: var(--muted); font-size: 1rem; margin-bottom: 2.5rem; }
+.meta {
+  color: var(--muted);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 2.5rem;
+}
+.back {
+  display: inline-block;
+  margin-bottom: 2rem;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+}
+
+/* --- Post index list --- */
+.post-list { list-style: none; padding: 0; margin: 0; }
+.post-list li { padding: 1.6rem 0; border-bottom: 1px solid var(--rule); margin: 0; }
+.post-list li:first-child { border-top: 1px solid var(--rule); }
+.post-list .title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.4rem;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.post-list .date { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.12em; }
+.post-list .excerpt { color: var(--muted); font-size: 15px; margin: 0.4rem 0 0; }
+
+/* --- Sources + CTA blocks --- */
+.sources { margin-top: 2.75rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); font-size: 15px; }
+.sources h2 { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.12em; margin: 0 0 0.6rem; }
+.sources ul { list-style: none; padding: 0; }
+
+.cta {
+  margin-top: 2rem;
+  padding: 1.4rem 1.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+}
+.cta p { margin: 0; }
+
+.disclaimer {
+  margin-top: 2.5rem;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
